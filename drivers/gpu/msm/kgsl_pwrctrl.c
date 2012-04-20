@@ -14,6 +14,7 @@
 #include <mach/msm_iomap.h>
 #include <mach/msm_bus.h>
 #include <mach/socinfo.h>
+#include <linux/cpufreq.h>
 
 #include "kgsl.h"
 #include "kgsl_pwrscale.h"
@@ -30,6 +31,8 @@
 
 #ifdef CONFIG_SEC_LIMIT_MAX_FREQ
 #define LMF_BROWSER_THRESHOLD	500000
+#ifdef CONFIG_CPU_FREQ_GOV_BADASS_GPU_CONTROL
+extern bool gpu_busy_state;
 #endif
 
 struct clk_pair {
@@ -318,6 +321,9 @@ static void kgsl_pwrctrl_busy_time(struct kgsl_device *device, bool on_time)
 	struct kgsl_pwrctrl *pwr;
 #endif
 
+#ifdef CONFIG_CPU_FREQ_GOV_BADASS_GPU_CONTROL
+	struct kgsl_pwrctrl *pwr_ctrl;
+#endif
 	if (b->start.tv_sec == 0)
 		do_gettimeofday(&(b->start));
 	do_gettimeofday(&(b->stop));
@@ -346,6 +352,14 @@ static void kgsl_pwrctrl_busy_time(struct kgsl_device *device, bool on_time)
 			lmf_browser_state = false;
 		else
 			lmf_browser_state = true;
+#ifdef CONFIG_CPU_FREQ_GOV_BADASS_GPU_CONTROL
+	pwr_ctrl = &device->pwrctrl;
+	if ((device->id == 0) &&
+	    (device->state == KGSL_STATE_ACTIVE) &&
+	    (pwr_ctrl->active_pwrlevel <= 2)) {
+		gpu_busy_state = true;
+	} else {
+		gpu_busy_state = false;
 	}
 #endif
 }
