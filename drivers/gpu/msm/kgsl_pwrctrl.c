@@ -353,14 +353,10 @@ static void kgsl_pwrctrl_busy_time(struct kgsl_device *device, bool on_time)
 		else
 			lmf_browser_state = true;
 #ifdef CONFIG_CPU_FREQ_GOV_BADASS_GPU_CONTROL
-	pwr_ctrl = &device->pwrctrl;
-	if ((device->id == 0) &&
-	    (device->state == KGSL_STATE_ACTIVE) &&
-	    (pwr_ctrl->active_pwrlevel <= 2)) {
+	if (on_time)
 		gpu_busy_state = true;
-	} else {
+	else
 		gpu_busy_state = false;
-	}
 #endif
 }
 
