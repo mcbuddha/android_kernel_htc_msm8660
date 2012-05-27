@@ -34,6 +34,7 @@
 #ifdef CONFIG_CPU_FREQ_GOV_BADASS_GPU_CONTROL
 extern bool gpu_busy_state;
 #endif
+#endif
 
 struct clk_pair {
 	const char *name;
@@ -352,6 +353,7 @@ static void kgsl_pwrctrl_busy_time(struct kgsl_device *device, bool on_time)
 			lmf_browser_state = false;
 		else
 			lmf_browser_state = true;
+#endif
 #ifdef CONFIG_CPU_FREQ_GOV_BADASS_GPU_CONTROL
 	if (on_time)
 		gpu_busy_state = true;
