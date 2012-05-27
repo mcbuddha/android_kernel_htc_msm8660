@@ -322,9 +322,9 @@ static void kgsl_pwrctrl_busy_time(struct kgsl_device *device, bool on_time)
 	struct kgsl_pwrctrl *pwr;
 #endif
 
-#ifdef CONFIG_CPU_FREQ_GOV_BADASS_GPU_CONTROL
-	struct kgsl_pwrctrl *pwr_ctrl;
-#endif
+//#ifdef CONFIG_CPU_FREQ_GOV_BADASS_GPU_CONTROL
+//	struct kgsl_pwrctrl *pwr_ctrl;
+//#endif
 	if (b->start.tv_sec == 0)
 		do_gettimeofday(&(b->start));
 	do_gettimeofday(&(b->stop));
